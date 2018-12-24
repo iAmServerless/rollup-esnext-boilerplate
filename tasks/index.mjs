@@ -1,13 +1,13 @@
 import rollup from 'rollup';
 import fs from 'fs';
 import { inputOptions, outputESMOptions, outputUMDOptions } from './build';
-import { serverBuildPath } from './config';
+import { serverBuildPath, codeSplitting } from './config';
 
 async function build(serverBuild, isProduction) {
   try {
     let bundle = await rollup.rollup(inputOptions(serverBuild, isProduction));
     let esmResult = !serverBuild? await bundle.write(outputESMOptions(serverBuild)): {output:{}};
-    let umdResult = await bundle.write(outputUMDOptions(serverBuild));
+    let umdResult = !serverBuild && codeSplitting? {output:{}}: await bundle.write(outputUMDOptions(serverBuild));
     let manifestESM = Object.keys(esmResult.output).filter((assetName) => {
       return !!esmResult.output[assetName].fileName
     }).map((assetName) => {

@@ -1,5 +1,5 @@
 
-const codeSplitting = false;
+const codeSplitting = true;
 const clientBuildPath = './clientBuild';
 const serverBuildPath = './serverBuild';
 const clientInitial = codeSplitting? './src/client/index.code_splitting.mjs': './src/client/index.mjs';
